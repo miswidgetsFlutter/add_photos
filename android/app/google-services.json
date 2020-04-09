@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "209798040859",
+    "firebase_url": "https://addphotos-44b02.firebaseio.com",
+    "project_id": "addphotos-44b02",
+    "storage_bucket": "addphotos-44b02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209798040859:android:e6cddbdf89ee8c96b557be",
+        "android_client_info": {
+          "package_name": "com.example.add_photos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209798040859-276dspeehv8i13v9b3h1r27tbh4laflk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs5WD9oMHTheYyAdLJ-HYDS6nTkeF-6QU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209798040859-276dspeehv8i13v9b3h1r27tbh4laflk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
