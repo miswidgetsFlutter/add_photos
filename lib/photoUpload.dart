@@ -1,6 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:intl/intl.dart';
 
 class PhotoUpload extends StatefulWidget {
   PhotoUpload({Key key}) : super(key: key);
@@ -12,6 +16,7 @@ class PhotoUpload extends StatefulWidget {
 class _PhotoUploadState extends State<PhotoUpload> {
   File sampleImage;
   final formkey = GlobalKey<FormState>();
+  String url;
   String _myvalue;
 
   @override
@@ -73,7 +78,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                   child: Text("Add a new post"),
                   textColor: Colors.white,
                   color: Colors.pink,
-                  onPressed: validateAndSave,
+                  onPressed: uploadStatusImage,
                 )
               ],
             ),
@@ -82,6 +87,41 @@ class _PhotoUploadState extends State<PhotoUpload> {
       ),
     );
   }
+
+  void uploadStatusImage() async {
+    if (validateAndSave()) {
+      final StorageReference postImageRef = FirebaseStorage.instance.ref().child("post images");
+      var timeKey = DateTime.now();
+      final StorageUploadTask uploadTask = postImageRef.child(timeKey.toString()+".jpg").putFile(sampleImage);
+      var imageUrl = await(await uploadTask.onComplete).ref.getDownloadURL();
+      url = imageUrl.toString();
+      print("Image Url: "+ url);
+      //guardar imagen es realtime database
+      saveToDatabase(url);
+      //regresar a home
+      Navigator.pop(context);
+    }
+  }
+
+  void saveToDatabase(String url){
+    //guarda el post
+    var dbTimeKey = DateTime.now();
+    var formatDate = DateFormat('MMM d, YYYY');
+    var formatTime = DateFormat('EEEE, hh:mm aaa');
+
+    String date = formatDate.format(dbTimeKey);
+    String time = formatTime.format(dbTimeKey);
+
+    DatabaseReference ref = FirebaseDatabase.instance.reference();
+    var data = {
+      "image": url,
+      "descripcion": _myvalue,
+      "date": date,
+      "time": time
+    };
+    ref.child("Posts").push().set(data);
+  }
+
   bool validateAndSave(){
     final form = formkey.currentState;
     if (form.validate()) {
